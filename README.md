@@ -3,7 +3,7 @@ Console-based program to move downloaded episodes of a TV show to the proper fol
 
 The program creates a database of show keywords ("X files") and the directory those shows belong in ("C:\video\X files"). 
 
-Shows can be added, and the database is saved for future use.
+Shows can be added, and the database is saved in data.json for future use.
 
 When needed, the user can run the mover utility to move all files/folders matching the keywords and containing the text "S##E##" from the source directory (e.g. Downloads folder) to the specified destination directory.
 
