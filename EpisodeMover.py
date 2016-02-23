@@ -9,7 +9,7 @@ def move_files():
     srcdir = input("Please enter the full path where your videos are located.\n" +
                    "Example: C:\\user\\downloads\\ \n").strip()
     while not os.path.isdir(srcdir):
-        srcdir = input("Invalid directory. Please enter the full path where your" +
+        srcdir = input("Invalid directory. Please enter the full path where your " +
                        "videos are located.\n Example: C:\\user\\downloads\\ \n").strip()
     for filename in os.listdir(srcdir):
         # Only look for folders/files in the format "S##E##". Example: "X-Files S01E02"
@@ -85,14 +85,16 @@ def prompt():
 
 # Saves the data dict to a JSON file for future use
 def save_json():
-    with open('data.json', 'w') as f:
+    cwd = os.getcwd()
+    with open(cwd + '\\data.json', 'w') as f:
         json.dump(data, f)
 
 # Loads dictionary of show keywords and directories from JSON data file if it exists
 # Prints loaded data
 data = {}
-if os.path.exists('data.json'):
-    with open('data.json', 'r') as f:
+cwd = os.path.dirname(os.path.abspath(__file__))
+if os.path.exists(cwd + '\\data.json'):
+    with open(cwd + '\\data.json', 'r') as f:
          data = json.load(f)
     print("Loaded data:")
     for key in data.keys():
