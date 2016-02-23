@@ -85,7 +85,6 @@ def prompt():
 
 # Saves the data dict to a JSON file for future use
 def save_json():
-    cwd = os.getcwd()
     with open(cwd + '\\data.json', 'w') as f:
         json.dump(data, f)
 
