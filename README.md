@@ -1,7 +1,7 @@
 # EpisodeMover
 Console-based program to move downloaded episodes of a TV show to the proper folder
 
-The program creates a database of show keywords ("X files") and the directory those shows belong in ("C:\video\X files"). 
+The program lets you create a database of show keywords ("X files") and the directory those shows belong in ("C:\video\X files"). 
 
 Shows can be added, and the database is saved in data.json for future use.
 
