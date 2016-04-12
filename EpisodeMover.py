@@ -104,7 +104,7 @@ def prompt():
 
 def save_json():
     """ Save data to data.json for future use """
-    with open(cwd + '\\data.json', 'w') as f:
+    with open(os.path.join(cwd, 'data.json'), 'w') as f:
         json.dump(data, f)
 
 def print_data():
