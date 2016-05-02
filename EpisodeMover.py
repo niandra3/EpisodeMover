@@ -9,7 +9,7 @@ def move_files():
     Directory is specified by user, or if possible, loaded from data.json
     """
     if "defaultdirectory" in data:
-        print("\n** Default video source directory:", data["defaultdirectory"])
+        print("\n*** Default video source directory:", data["defaultdirectory"])
         srcdir = input("Enter '1' to use default video source directory\n"
                        "Otherwise, please enter the full path where your videos are located.\n"
                        "Example: C:\\user\\downloads\\ \n").strip()
@@ -19,7 +19,7 @@ def move_files():
         srcdir = input("Please enter the full path where your videos are located.\n"
                        "Example: C:\\user\\downloads\\ \n").strip()
     while not os.path.isdir(srcdir):
-        srcdir = input("\n** Invalid directory. Please enter the full path where your "
+        srcdir = input("\n*** Invalid directory. Please enter the full path where your "
                         "videos are located.\n Example: C:\\user\\downloads\\ \n").strip()
     data["defaultdirectory"] = srcdir
     save_json()
@@ -37,7 +37,7 @@ def move_files():
                     try:
                         shutil.move(filepath, data[key])
                     except Exception as e:
-                        print("Error with {}".format(filename))
+                        print("*** Error with {}".format(filename))
                         print("The file might be open in another program")
                         print(repr(e))
                     else:
@@ -65,8 +65,8 @@ def add_directory():
                      "Example: C:\\videos\\x files\n").strip()
     if not os.path.exists(showPath):
         os.makedirs(showPath)
-        print("\n** Directory did not exist. Created directory: '{}'".format(showPath))
-    print("** Move '{}' shows to directory: '{}'".format(showKeywords, showPath))
+        print("\n*** Directory did not exist. Created directory: '{}'".format(showPath))
+    print("*** Move '{}' shows to directory: '{}'".format(showKeywords, showPath))
     data[showKeywords] = showPath
     save_json()
 
@@ -92,20 +92,21 @@ def remove_directory():
                           "to delete:\n").strip()
     selection = int(selection)
     if selection != count:
-        print("\n** {} has been deleted".format(deleteDict[selection]))
+        print("\n*** {} has been deleted".format(deleteDict[selection]))
         del data[deleteDict[selection]]
     save_json()
 
 def prompt():
     """ Prompt user for commands"""
-    inpt = input("\nSelect the number of the operation you wish to complete:\n"
-                 "1. Run file mover\n2. Add directories" +
-                 "\n3. Remove directory\n4. View saved directories\n5. Quit\n").strip()
-    while inpt not in ['1','2','3','4','5']:
-        inpt = input("\nInvalid. Please select the number of the operation you wish "
+    inpt = -1
+    valid_choices = ['1','2','3','4','5']
+    while inpt not in valid_choices:
+        inpt = input("\nPlease select the number of the operation you wish "
                      "to complete:\n" +
                      "1. Run file mover\n2. Add directories"
                      "\n3. Remove directory\n4. View saved directories\n5. Quit\n").strip()
+        if inpt not in valid_choices:
+            print("\n*** Invalid choice ***")
     return inpt
 
 def save_json():
@@ -115,9 +116,9 @@ def save_json():
 
 def print_data():
     """ Print data for user to view"""
-    print("\n\n** Loaded data:")
+    print("\n\n*** Loaded data:")
     if "defaultdirectory" in data:
-        print("** Default video source directory:", data["defaultdirectory"])
+        print("*** Default video source directory:", data["defaultdirectory"])
     for key in sorted(data):
         if key != "defaultdirectory":
             print("{} --> {}".format(key, data[key]))
