@@ -8,7 +8,7 @@ def move_files():
 
     Directory is specified by user, or if possible, loaded from data.json
     """
-    if "defaultdirectory" in data.keys():
+    if "defaultdirectory" in data:
         print("\n** Default video source directory:", data["defaultdirectory"])
         srcdir = input("Enter '1' to use default video source directory\n"
                        "Otherwise, please enter the full path where your videos are located.\n"
@@ -30,12 +30,18 @@ def move_files():
             found = False
             filepath = os.path.join(srcdir, filename)
             name = filename.lower()
-            for key in data.keys():
+            for key in data:
                 keywords = key.split()
                 if all(word in name for word in keywords):
                     found = True
-                    shutil.move(filepath, data[key])
-                    print("*** Moved:", (filename[:41] + "...") if len(filename) > 44 else filename)
+                    try:
+                        shutil.move(filepath, data[key])
+                    except Exception as e:
+                        print("Error with {}".format(filename))
+                        print("The file might be open in another program")
+                        print(repr(e))
+                    else:
+                        print("*** Moved:", (filename[:41] + "...") if len(filename) > 44 else filename)
                     break
             if not found:
                 # Prints the shows that matched the episode formatting, but were not
@@ -73,14 +79,14 @@ def remove_directory():
     # Creates a dict to map user selection numbers to keys of the data dict
     deleteDict = {}
     print('\n')
-    for key in sorted(data.keys()):
+    for key in sorted(data):
         if not key.startswith('defaultdirectory'):
             print("{}. {} --> {}".format(count, key, data[key]))
             deleteDict[count] = key
             count += 1
     print("{}. Cancel".format(count))
     selection = input("\nSelect the number of the directory you want to delete:\n").strip()
-    while (not selection.isdigit()) or (int(selection) not in deleteDict.keys()) and \
+    while (not selection.isdigit()) or (int(selection) not in deleteDict) and \
             (int(selection) != count):
         selection = input("Invalid selection. Select the number of the directory you want "
                           "to delete:\n").strip()
@@ -110,9 +116,9 @@ def save_json():
 def print_data():
     """ Print data for user to view"""
     print("\n\n** Loaded data:")
-    if "defaultdirectory" in data.keys():
+    if "defaultdirectory" in data:
         print("** Default video source directory:", data["defaultdirectory"])
-    for key in sorted(data.keys()):
+    for key in sorted(data):
         if key != "defaultdirectory":
             print("{} --> {}".format(key, data[key]))
 
@@ -123,17 +129,19 @@ if __name__ == "__main__":
         with open(os.path.join(cwd, 'data.json'), 'r') as f:
              data = json.load(f)
         print_data()
-        
+
+    choices = {
+            '1': move_files,
+            '2': add_directory,
+            '3': remove_directory,
+            '4': print_data,
+            '5': exit
+        }
+    
     while True:
-        inpt = prompt()
-        if inpt.startswith('1'):
-            move_files()
-        if inpt.startswith('2'):
-            add_directory()
-        if inpt.startswith('3'):
-            remove_directory()
-        if inpt.startswith('4'):
-            print_data()
-        if inpt.startswith('5'):
-            print("Directory data saved. Exiting the program")
-            break
+        selection = prompt()
+        if selection in choices:
+            handler = choices[selection]
+            handler()
+        else:
+            print("Sorry, not a valid choice")
