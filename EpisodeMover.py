@@ -61,6 +61,8 @@ def add_directory():
         showKeywords = input("Invalid keywords, please input alphanumeric characters only\n" +
                              "Input mandatory keywords for the show title seperated by a space.\n"
                              "Example: X files\n").lower().strip()
+    while showKeywords.lower() in data:
+        showKeywords = input("Show already in database, enter new show keywords:\n")
     showPath = input("\nInput path for the folder for {}:\n".format(showKeywords) +
                      "Example: C:\\videos\\x files\n").strip()
     if not os.path.exists(showPath):
